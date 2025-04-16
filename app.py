@@ -19,4 +19,4 @@ if uploaded_file is not None:
         st.info("Full AI integration coming next. This confirms upload is working.")
 else:
     st.info("Upload a .docx, .xlsx, or .json case file to begin.")
-python-docx
+
