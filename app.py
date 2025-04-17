@@ -1,8 +1,8 @@
 
 import streamlit as st
 from docx import Document
-import time
 from io import BytesIO
+import time
 
 st.set_page_config(page_title="Nathan Mills Marine – AI Report Generator", layout="wide")
 st.title("Nathan Mills Marine – AI Report Generator")
@@ -13,6 +13,7 @@ if uploaded_file is not None:
     st.success(f"Uploaded: {uploaded_file.name}")
     
     if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        from docx import Document
         doc = Document(uploaded_file)
         st.subheader("Preview of Uploaded Report:")
         for para in doc.paragraphs[:5]:
@@ -30,7 +31,6 @@ if uploaded_file is not None:
         status.text("🧠 Generating AI report content...")
         time.sleep(2)
 
-        # Simulated AI-generated content
         report_sections = [
             ("1.0 INTRODUCTION", "This report was prepared to assess the vessel’s performance in accordance with the charterparty terms."),
             ("2.0 DOCUMENTS REVIEWED", "Charterparty, noon reports, AIS track data, weather records, hull inspection."),
@@ -43,7 +43,7 @@ if uploaded_file is not None:
         progress.progress(70)
         status.text("📝 Formatting into .docx file...")
 
-        # Create the .docx report
+        # Generate the Word document
         output_doc = Document()
         output_doc.add_heading("Technical Report – AI Draft", level=1)
         for title, content in report_sections:
@@ -51,7 +51,6 @@ if uploaded_file is not None:
             output_doc.add_paragraph(content)
         output_doc.add_paragraph("\nCaptain Nathan Mills\nTechnical Director, Nathan Mills Marine")
 
-        # Prepare the file to download
         docx_io = BytesIO()
         output_doc.save(docx_io)
         docx_io.seek(0)
@@ -59,8 +58,7 @@ if uploaded_file is not None:
         progress.progress(100)
         status.text("✅ Report generation complete.")
 
-        st.success("✅ Full AI report generated.")
-        st.download_button("⬇️ Download Report (.docx)", data=docx_io, file_name="NMM_AI_Report.docx")
-
+        st.success("✅ AI-generated report is ready for download.")
+        st.download_button("⬇️ Download Report (.docx)", data=docx_io, file_name="NMM_AI_Report.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 else:
     st.info("Upload a .docx, .xlsx, or .json case file to begin.")
